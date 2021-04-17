@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include <conio.h>
+#include <math.h>
+#define MAX 40
+
+typedef struct stack
+{
+int data[MAX];
+int top;
+}stack;
+
+void initial(stack *);
+int empty(stack *);
+int full(stack *);
+int pop(stack *);
+void push(stack *,int);
+int evaluate(char x,int operator1,int operator2);
+
+int main()
+{
+stack n;
+char x;
+int operator1,operator2,val;
+initial(&n);
+printf("Enter the expression(for exemple 40+3*=12)\n\n(Single digit operand and operators only) Expresion is :");
+
+while((x=getchar())!='\n')
+{
+if(isdigit(x))
+push(&n,x-48);      //x-48 for removing the effect of ASCII
+else
+{
+operator2=pop(&n);
+operator1=pop(&n);
+val=evaluate(x,operator1,operator2);
+push(&n,val);
+}
+}
+
+val=pop(&n);
+printf("\nValue of expression is equal to :%d",val);
+
+return 0;
+}
+
+int evaluate(char x,int operator1,int operator2)
+{
+if(x=='+')
+return(operator1+operator2);
+if(x=='-')
+return(operator1-operator2);
+if(x=='*')
+return(operator1*operator2);
+if(x=='/')
+return(operator1/operator2);
+if(x=='%')
+return(operator1%operator2);
+}
+
+void initial(stack *n)
+{
+n->top=-1;
+}
+
+int empty(stack *n)
+{
+if(n->top==-1)
+return(1);
+
+return(0);
+}
+
+int full(stack *n)
+{
+if(n->top==MAX-1)
+return(1);
+
+return(0);
+}
+
+void push(stack *n,int x)
+{
+n->top=n->top+1;
+n->data[n->top]=x;
+}
+
+int pop(stack *n)
+{
+int x;
+x=n->data[n->top];
+n->top=n->top-1;
+
+return(x);
+}
